@@ -31,12 +31,12 @@ def do_stuff(choice):
     req["Filename"] = str(input("Please enter the name of the file you wish to access/create: "))
     req["Password"] = str(getpass.getpass("please input the password associated with that file: "))
     if choice == 1:
-        res = requests.post("http://10.0.0.27:5000/getcipher", json= req)
+        res = requests.post("https://vinylic.me/getcipher", json= req)
     elif choice == 2:
-        res = requests.post("http://10.0.0.27:5000/getplain", json= req)
+        res = requests.post("https://vinylic.me/getplain", json= req)
     elif choice == 3:
         req["Message"] = str(input("Please enter the text you wish to encrypt and store: "))
-        res = requests.post("http://10.0.0.27:5000/setplain", json= req)
+        res = requests.post("https://vinylic.me/setplain", json= req)
     else:
         print("Mild Inconvenience, Killing myselg")
         exit()
@@ -62,9 +62,9 @@ except Exception as e:
     """
     Asks the user to sign in through the Auth0 interface, and stores the recieved access token
     """
-    url = requests.get("http://10.0.0.27:5000/login")
+    url = requests.get("https://vinylic.me/login")
     print("Please follow this URL to complete authentication: " + url.content.decode("utf-8"))
-    auth_token =requests.get("http://10.0.0.27:5000/token").content.decode("utf-8")
+    auth_token =requests.get("https://vinylic.me/token").content.decode("utf-8")
     token = open("token", "w")
     token.write(auth_token.json())
     if auth_token.status_code == 200:
