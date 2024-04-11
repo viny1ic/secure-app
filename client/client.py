@@ -31,26 +31,24 @@ def do_stuff(choice):
         res = requests.post("http://10.0.0.27:5000/setplain", json= req)
     else:
         print("Mild Inconvenience, Killing myselg")
-        print(res.content.decode("utf-8"))
         exit()
-    print(res)
+    print(res.content.decode("utf-8"))
 
-# try:
-token = open("token", "r")
-raw_token = token.read()
-print(raw_token)
-auth_token = json.loads(raw_token)
-print("Authentication succesful!")
-menu()
-# except:
-url = requests.get("http://10.0.0.27:5000/login")
-print("Please follow this URL to complete authentication: " + url.content.decode("utf-8"))
-auth_token =json.loads(requests.get("http://10.0.0.27:5000/token").content.decode("utf-8"))
-token = open("token", "w")
-token.write(auth_token)
-# print(auth_token.content.decode("utf-8"))
-# print(auth_token.status_code)
-if auth_token.status_code == 200:
+try:
+    token = open("token", "r")
+    raw_token = token.read()
+    print(raw_token)
+    auth_token = json.loads(raw_token)
     print("Authentication succesful!")
     menu()
+except Exception as e:
+    print(e)
+    url = requests.get("http://10.0.0.27:5000/login")
+    print("Please follow this URL to complete authentication: " + url.content.decode("utf-8"))
+    auth_token =requests.get("http://10.0.0.27:5000/token").content.decode("utf-8")
+    token = open("token", "w")
+    token.write(auth_token.json())
+    if auth_token.status_code == 200:
+        print("Authentication succesful!")
+        menu()
 

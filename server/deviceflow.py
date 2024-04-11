@@ -49,8 +49,6 @@ def login():
     global device_code_data
     device_code_data = device_code_response.json()
     AUTH_URL = device_code_data['verification_uri_complete']
-    print('1. On your computer or mobile device navigate to: ', AUTH_URL)
-    print('2. Enter the following code: ', device_code_data['user_code'])
     global token_payload 
     token_payload = {
         'grant_type': 'urn:ietf:params:oauth:grant-type:device_code',
@@ -62,8 +60,8 @@ def login():
 @flaskapp.route("/token")
 def check_auth():
     AUTHENTICATED = False
+    print('Checking if the user completed the flow...')
     while not AUTHENTICATED:
-        print('Checking if the user completed the flow...')
         token_response = requests.post('https://{}/oauth/token'.format(AUTH0_DOMAIN), data=token_payload)
 
         token_data = token_response.json()
@@ -86,31 +84,28 @@ def check_auth():
 
 @flaskapp.route("/getplain", methods = ['POST'])
 def getplaintext():
-    print(json.loads(request.data.decode("utf-8")))
     req = json.loads(request.data.decode("utf-8"))
     try:
         validate_token(req["id_token"])
-        secretify.decrypt(req["Filename"], req["Password"])
-        return "True", 200
+        plaintext = {"Plaintext": secretify.decrypt(req["Filename"], req["Password"]).decode("utf-8")}
+        return jsonify(plaintext), 200
     except Exception as e:
         print(e)
         return "Failed", 403
 
 @flaskapp.route("/getcipher", methods = ['POST'])
 def getciphertext():
-    print(json.loads(request.data.decode("utf-8")))
     req = json.loads(request.data.decode("utf-8"))
     try:
         validate_token(req["id_token"])
-        res = secretify.fetch(req["Filename"])
-        return res, 200
+        res = {"Cipher": secretify.fetch(req["Filename"])}
+        return jsonify(res), 200
     except Exception as e:
         print(e)
         return "Failed", 403
     
 @flaskapp.route("/setplain", methods = ['POST'])
 def setplaintext():
-    print(json.loads(request.data.decode("utf-8")))
     req = json.loads(request.data.decode("utf-8"))
     try:
         validate_token(req["id_token"])

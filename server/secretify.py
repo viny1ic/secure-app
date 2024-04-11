@@ -2,13 +2,13 @@ from Crypto.Cipher import AES
 import scrypt, os, binascii
 
 def gettext(filename):
-    file = open(filename, "rb")
-    return file.read()
+    file = open(filename, "r")
+    return eval(file.read())
 
 def settext(filename, Salt, ciphertext, nonce, authTag):
     text = (Salt, ciphertext, nonce, authTag)
-    file = open(filename, "wb")
-    file.write(text)
+    file = open(filename, "w")
+    file.write(str(text))
 
 def encrypt(filename, msg, password):
     Salt = os.urandom(16)
@@ -27,4 +27,4 @@ def decrypt(filename, password):
     return plaintext
 
 def fetch(filename):
-    return gettext(filename)
+    return str(gettext(filename)[2])
