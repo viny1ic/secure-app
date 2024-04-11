@@ -63,6 +63,9 @@ def login():
 
 @flaskapp.route("/token")
 def check_auth():
+    """
+    Checks if the user has completed the authorization process and determines if the user is aithenticated or not
+    """
     AUTHENTICATED = False
     print('Checking if the user completed the flow...')
     while not AUTHENTICATED:
@@ -88,6 +91,9 @@ def check_auth():
 
 @flaskapp.route("/getplain", methods = ['POST'])
 def getplaintext():
+    """
+    Gets the user specified plaintext if the supplied password is correct.
+    """
     req = json.loads(request.data.decode("utf-8"))
     try:
         validate_token(req["id_token"])
@@ -99,6 +105,9 @@ def getplaintext():
 
 @flaskapp.route("/getcipher", methods = ['POST'])
 def getciphertext():
+    """
+    Gets the user specified ciphertext if the supplied password is correct
+    """
     req = json.loads(request.data.decode("utf-8"))
     try:
         validate_token(req["id_token"])
@@ -110,6 +119,9 @@ def getciphertext():
     
 @flaskapp.route("/setplain", methods = ['POST'])
 def setplaintext():
+    """
+    stores user specified plaintext as an AES-256-GCM cipher with the password as a key using PBKDF
+    """
     req = json.loads(request.data.decode("utf-8"))
     try:
         validate_token(req["id_token"])

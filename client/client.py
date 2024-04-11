@@ -3,6 +3,9 @@ import json
 import getpass
 
 def menu():
+        """
+        Takes input from user
+        """
         print("What would you like to do today?")
         print("Enter 1 to retrieve encrypted ciphertext")
         print("Enter 2 to retrieve decrypted plaintext")
@@ -18,8 +21,13 @@ def menu():
         do_stuff(choice)
 
 def do_stuff(choice):
-    print(choice)
+    """
+    Does stuff.
+    """
     req = auth_token
+    """
+    Makes the appropriate request based on the input provided by the user. Asks the user for the appropriate input as required, and display the response of the request.
+    """
     req["Filename"] = str(input("Please enter the name of the file you wish to access/create: "))
     req["Password"] = str(getpass.getpass("please input the password associated with that file: "))
     if choice == 1:
@@ -34,7 +42,15 @@ def do_stuff(choice):
         exit()
     print(res.content.decode("utf-8"))
 
+
+
+"""
+Driver Code
+"""
 try:
+    """
+    Checks if token is stored locally
+    """
     token = open("token", "r")
     raw_token = token.read()
     print(raw_token)
@@ -43,6 +59,9 @@ try:
     menu()
 except Exception as e:
     print(e)
+    """
+    Asks the user to sign in through the Auth0 interface, and stores the recieved access token
+    """
     url = requests.get("http://10.0.0.27:5000/login")
     print("Please follow this URL to complete authentication: " + url.content.decode("utf-8"))
     auth_token =requests.get("http://10.0.0.27:5000/token").content.decode("utf-8")
