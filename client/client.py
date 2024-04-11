@@ -53,21 +53,21 @@ try:
     """
     token = open("token", "r")
     raw_token = token.read()
-    print(raw_token)
     auth_token = json.loads(raw_token)
     print("Authentication succesful!")
     menu()
 except Exception as e:
-    print(e)
+    print("Please log in to the service")
     """
     Asks the user to sign in through the Auth0 interface, and stores the recieved access token
     """
     url = requests.get("https://vinylic.me/login")
     print("Please follow this URL to complete authentication: " + url.content.decode("utf-8"))
-    auth_token =requests.get("https://vinylic.me/token").content.decode("utf-8")
-    token = open("token", "w")
-    token.write(auth_token.json())
-    if auth_token.status_code == 200:
+    token_temp =requests.get("https://vinylic.me/token")
+    auth_token = token_temp.content.decode("utf-8")
+    token = open("token", "w+")
+    token.write(auth_token)
+    if token_temp.status_code == 200:
         print("Authentication succesful!")
-        menu()
+        print("Please run the program again")
 
