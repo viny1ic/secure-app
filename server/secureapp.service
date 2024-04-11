@@ -1,0 +1,12 @@
+[Unit]
+Description=Secure App Server
+After=multi-user.target
+
+[Service]
+Type=simple
+Restart=always
+WorkingDirectory=/home/ubuntu/secure-app/
+ExecStart=/usr/bin/bash /home/ubuntu/secure-app/start.sh
+
+[Install]
+WantedBy=multi-user.target
