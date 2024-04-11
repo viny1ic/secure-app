@@ -5,9 +5,13 @@ import jwt
 import requests
 import secretify
 import json
+from dotenv import load_dotenv
+import os
 
-AUTH0_DOMAIN = 'dev-lbo38pf44b8tft3j.us.auth0.com'
-AUTH0_CLIENT_ID = 'ftmw3Q2Q8l2VtBb5gbFkYg13MyUqqtxS'
+load_dotenv()
+
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
+AUTH0_CLIENT_ID = os.getenv('AUTH0_CLIENT_ID')
 ALGORITHMS = ['RS256']
 AUTHENTICATED = False
 AUTH_URL=""
@@ -116,4 +120,4 @@ def setplaintext():
         return "Failed", 403
 
 if __name__ == "__main__":
-    flaskapp.run(debug=True, host="0.0.0.0", port=5000)
+    flaskapp.run(host=os.getenv("HOST"), port=os.getenv("PORT"))

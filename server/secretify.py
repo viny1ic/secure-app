@@ -21,9 +21,13 @@ def encrypt(filename, msg, password):
 def decrypt(filename, password):
     encryptedMsg = gettext(filename)
     (Salt, ciphertext, nonce, authTag) = encryptedMsg
-    secretKey = scrypt.hash(password.encode("utf-8"), Salt, N=16384, r=8, p=1, buflen=32)
-    aesCipher = AES.new(secretKey, AES.MODE_GCM, nonce)
-    plaintext = aesCipher.decrypt_and_verify(ciphertext, authTag)
+    try:
+        secretKey = scrypt.hash(password.encode("utf-8"), Salt, N=16384, r=8, p=1, buflen=32)
+        aesCipher = AES.new(secretKey, AES.MODE_GCM, nonce)
+        plaintext = aesCipher.decrypt_and_verify(ciphertext, authTag)
+    except Exception as e:
+        print(e)
+        return "Failed to decrypt the cipher. Please check the supplied values".encode("utf-8")
     return plaintext
 
 def fetch(filename):
