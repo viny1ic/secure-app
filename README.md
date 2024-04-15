@@ -10,3 +10,23 @@ Select the action for the option you wish to perform.
 
 ## Sample Files
 Sample files are provided in the `sample` folder.<br>
+
+## How to run server
+Log into Auth0 and setup account and oauth app using device authorization flow. <br>
+```bash
+# clone the github repository
+git clone https://github.com/viny1ic/secure-app
+cd secure-app
+
+# Create virtual environment
+pip install virtualenv
+python -m venv venv
+source env/bin/activate
+
+# Install required packages
+pip install pycryptodome flask flask-restful 'python-jose[cryptography]' python-dotenv authlib
+```
+<br>Save required credentials into the .env file acquired from the auth0 Dashboard<br>
+```bash
+sudo cp server/secureapp.service
+```
