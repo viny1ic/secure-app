@@ -40,6 +40,8 @@ def do_stuff(choice):
     else:
         print("Mild Inconvenience, Killing myselg")
         exit()
+    if res.status_code != 200:
+        print("Failed. If the auth token is expired, please remove it ('token' file)")
     print(res.content.decode("utf-8"))
 
 
